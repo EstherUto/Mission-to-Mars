@@ -16,7 +16,7 @@
       <div class="jumbotron text-center">
         <h1>Mission to Mars</h1>
         <!-- Add a button to activate scraping script -->
-        <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+        <p><a class="btn btn-info btn-lg btn-block" href="/scrape" role="button">Scrape New Data</a></p>
       </div>
 
       <!-- Add section for Mars News -->
@@ -51,21 +51,20 @@
         </div>
       </div>
 
-      <!-- Hemispheres --> <!-- ----- HELP!! ------- -->
-      <div class="row" id="jumbotron text-center">
+      <!-- Hemispheres -->
+      <div class="row" id="mars-hemispheres">
 
         <div>
           <h2> Mars Hemisphers </h2>
         </div>
 
-        {% for h in mars.hemisphere %}
-        <div class="row" id="mars-hemispheres">
-          <div class="col-md-8">
-            <img src="{{hemisphere.img_url}}">
-              <h3>{{ hemisphere.title}}</h3>
+        {% for h in mars.hemispheres %}
+          <div class="col-md-6">
+            <!-- add a class to change image size based on what it is contained inside-->
+            <img src="{{h.img_url}}" class="img-responsive img-thumbnail" alt="Responsive image">
+              <h3>{{ h.title}}</h3>
             </img>
           </div>
-        </div>
         {% endfor %}
 
       </div>

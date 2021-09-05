@@ -18,9 +18,8 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres":  scrape_hemisphere(browser),
         "last_modified": dt.datetime.now()
-        # create a new dictionary in the data dictionary to hold a list of dictionaries 
-        # with the URL string and title of each hemisphere image. ????????
     }
     # Stop webdriver and return data
     browser.quit()
@@ -96,42 +95,43 @@ def mars_facts():
     df.set_index('Description', inplace=True)
 
     # Convert dataframe into HTML format, add bootstrap
-    return df.to_html(classes="table table-striped")
+    return df.to_html(classes=["table", "table-striped", "table-hover"])
 
-# ---------- HELP!!! ---------- #
-
-def scrape_hemisphere():
+def scrape_hemisphere(browser):
     # Use browser to visit the URL 
     url = 'https://marshemispheres.com/'
     browser.visit(url)
 
+    # Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
     try:
 
         # Write code to retrieve the image urls and titles for each hemisphere.
-        links = browser.find_by_css('a.itemLink product-item img')
+        links = browser.find_by_css('a.itemLink.product-item img')
 
         for i in range(len(links)):
             hemisphere = {}
 
-            browser.find_by_css('a.itemLink product-item img')[i].click()
+            browser.find_by_css('a.itemLink.product-item img')[i].click()
 
-            sample_img = browser.links.find_by_css('a.itemLink product-item img').first
+            sample_img = browser.find_by_text('Sample').first
 
             hemisphere['img_url'] = sample_img['href']
             
-            hemisphere['title'] = browser.find_by_css('h3').text
+            hemisphere['title'] = browser.find_by_css('h2.title').text
+            
+            hemisphere_image_urls.append(hemisphere)
 
             browser.back()
 
     except BaseException:
-        hemisphere['img_url'] = "error"
-        
-        hemisphere['title'] = "error"
+        pass
 
     # Quit the browser
     browser.quit()
 
-    return hemisphere
+    return hemisphere_image_urls
 
 if __name__ == "__main__":
 

@@ -53,8 +53,6 @@ df.set_index('description', inplace=True)
 
 # --- Scrape High-Resolution Mars’ Hemisphere Images and Titles
 
-# ---------- HELP!!! ---------- #
-
 # Hemispheres
 
 # Use browser to visit the URL 
@@ -66,18 +64,18 @@ browser.visit(url)
 hemisphere_image_urls = []
 
 # Write code to retrieve the image urls and titles for each hemisphere.
-links = browser.find_by_css('a.itemLink product-item img')
+links = browser.find_by_css('a.itemLink.product-item img')
 
 for i in range(len(links)):
     hemisphere = {}
 
-    browser.find_by_css('a.itemLink product-item img')[i].click()
+    browser.find_by_css('a.itemLink.product-item img')[i].click()
 
-    sample_img = browser.links.find_by_css('a.itemLink product-item img').first
+    sample_img = browser.find_by_text('Sample').first
 
     hemisphere['img_url'] = sample_img['href']
     
-    hemisphere['title'] = browser.find_by_css('h3').text
+    hemisphere['title'] = browser.find_by_css('h2.title').text
     
     hemisphere_image_urls.append(hemisphere)
 
