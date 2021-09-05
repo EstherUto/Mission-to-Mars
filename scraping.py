@@ -19,6 +19,8 @@ def scrape_all():
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
         "last_modified": dt.datetime.now()
+        # create a new dictionary in the data dictionary to hold a list of dictionaries 
+        # with the URL string and title of each hemisphere image. ????????
     }
     # Stop webdriver and return data
     browser.quit()
@@ -95,6 +97,41 @@ def mars_facts():
 
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+# ---------- HELP!!! ---------- #
+
+def scrape_hemisphere():
+    # Use browser to visit the URL 
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+
+    try:
+
+        # Write code to retrieve the image urls and titles for each hemisphere.
+        links = browser.find_by_css('a.itemLink product-item img')
+
+        for i in range(len(links)):
+            hemisphere = {}
+
+            browser.find_by_css('a.itemLink product-item img')[i].click()
+
+            sample_img = browser.links.find_by_css('a.itemLink product-item img').first
+
+            hemisphere['img_url'] = sample_img['href']
+            
+            hemisphere['title'] = browser.find_by_css('h3').text
+
+            browser.back()
+
+    except BaseException:
+        hemisphere['img_url'] = "error"
+        
+        hemisphere['title'] = "error"
+
+    # Quit the browser
+    browser.quit()
+
+    return hemisphere
 
 if __name__ == "__main__":
 
